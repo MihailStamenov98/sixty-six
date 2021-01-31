@@ -69,6 +69,8 @@ int minSecondMove(vector<Card> maxCards, vector<Card> minCards, int alpha, int b
 			maxPoints += minCards[0].getValue();
 			return maxPoints - minPoints;
 		}
+
+
 		minPoints += firstCard.getValue();
 		minPoints += minCards[0].getValue();
 		return maxPoints - minPoints;
