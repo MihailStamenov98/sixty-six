@@ -1,4 +1,7 @@
 #pragma once
+#include<iostream>
+#include<string>
+using namespace std;
 enum Value
 {
 	nine = 0,
@@ -25,6 +28,7 @@ private:
 	Value value;
 public:
 	Card(Color c, Value v);
+	Card(const Card& card);
 
 	bool isGreater(Card secondCard, Color coz);
 	
@@ -33,4 +37,8 @@ public:
 	int getValue();
 
 	Color getColor();
+
+	string getName();
+
+	string getColorName();
 };

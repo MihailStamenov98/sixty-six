@@ -14,6 +14,9 @@ private:
 
 	int maxSecondMove(vector<Card> maxCards, vector<Card> minCards, int alpha, int beta, int maxPoints, int minPoints, Card firstCard);
 	int minSecondMove(vector<Card> maxCards, vector<Card> minCards, int alpha, int beta, int maxPoints, int minPoints, Card firstCard);
+
+	pair<int, int> trickComputerFirst(int computerResult, int oponentResult);
+	pair<int, int> trickComputerSecond(int computerResult, int oponentResult);
 public:
 	EndGame(Color trump, vector<Card> maxPlayerCards, vector<Card> minPlayerCards);
 	int chooseCardFirstMove();
