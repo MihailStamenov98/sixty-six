@@ -20,6 +20,7 @@ enum Color
 	spades
 };
 
+string getColorString(Color color);
 
 class Card
 {

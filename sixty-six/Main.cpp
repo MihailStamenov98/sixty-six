@@ -28,14 +28,16 @@ vector<Card> getDeck()
 
 int main()
 {
-	vector<Card> deck = getDeck();
+	/*vector<Card> deck = getDeck();
 	vector<Card>::const_iterator first = deck.begin() + 0;
 	vector<Card>::const_iterator last = deck.begin() + 6;
 	vector<Card> newVec(first, last);
 	first = deck.begin() + 7;
 	last = deck.begin() + 13;
 	vector<Card> secVec(first, last);
-	vector<Card> comp;
+	vector<Card> comp;*/
+	vector<Card> newVec = { Card(diamonds,jack), Card(diamonds,ace), Card(hearts,ace), Card(clubs,ten), Card(clubs,jack), Card(spades,jack) };
+	vector<Card> secVec = { Card(hearts, jack), Card(hearts, queen), Card(diamonds,nine), Card(spades,king), Card(hearts,ten), Card(clubs,king) };
 	EndGame game(diamonds, newVec, secVec);
 	game.play();
 	return 0;

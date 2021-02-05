@@ -26,7 +26,14 @@ bool Card::isGreater(Card secondCard, Color coz)
 	{
 		return false;
 	}
-	return value >= secondCard.value;
+	else if (color == secondCard.color)
+	{
+		return value > secondCard.value;
+	}
+	else
+	{
+		return true;
+	}
 }
 
 bool Card::operator!=(const Card& secondCard)
@@ -73,6 +80,11 @@ string Card::getName()
 }
 
 string Card::getColorName()
+{
+	return getColorString(color);
+}
+
+string getColorString(Color color)
 {
 	switch (color)
 	{

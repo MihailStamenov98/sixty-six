@@ -1,10 +1,2 @@
-﻿  EndGame.cpp
-D:\MPStar\КН\Година 4\Семестър 1\Изкуствен интелект\sixty-six\sixty-six\EndGame.cpp(33,20): warning C4018: '<': signed/unsigned mismatch
-D:\MPStar\КН\Година 4\Семестър 1\Изкуствен интелект\sixty-six\sixty-six\EndGame.cpp(79,20): warning C4018: '<': signed/unsigned mismatch
-D:\MPStar\КН\Година 4\Семестър 1\Изкуствен интелект\sixty-six\sixty-six\EndGame.cpp(112,20): warning C4018: '<': signed/unsigned mismatch
-D:\MPStar\КН\Година 4\Семестър 1\Изкуствен интелект\sixty-six\sixty-six\EndGame.cpp(130,20): warning C4018: '<': signed/unsigned mismatch
-D:\MPStar\КН\Година 4\Семестър 1\Изкуствен интелект\sixty-six\sixty-six\EndGame.cpp(149,20): warning C4018: '<': signed/unsigned mismatch
-D:\MPStar\КН\Година 4\Семестър 1\Изкуствен интелект\sixty-six\sixty-six\EndGame.cpp(168,20): warning C4018: '<': signed/unsigned mismatch
-D:\MPStar\КН\Година 4\Семестър 1\Изкуствен интелект\sixty-six\sixty-six\EndGame.cpp(204,20): warning C4018: '<': signed/unsigned mismatch
-D:\MPStar\КН\Година 4\Семестър 1\Изкуствен интелект\sixty-six\sixty-six\EndGame.cpp(209,20): warning C4018: '<': signed/unsigned mismatch
+﻿  Card.cpp
   sixty-six.vcxproj -> D:\MPStar\КН\Година 4\Семестър 1\Изкуствен интелект\sixty-six\Debug\sixty-six.exe
