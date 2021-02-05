@@ -5,9 +5,8 @@ class Player
 {
 private:
 	Color trump;
-	vector<Card> maxPlayerCards;
 public:
-	virtual void printCards() = 0;
-	virtual int chooseCardFirstMove() = 0;
-	virtual int chooseCardSecondMove(Card firstCard) = 0;
+	virtual void printCards(vector<Card> maxCards) = 0;
+	virtual int chooseCardFirstMove(vector<Card> maxCards, vector<Card> minCards) = 0;
+	virtual int chooseCardSecondMove(Card firstCard, vector<Card> maxCards, vector<Card> minCards) = 0;
 };

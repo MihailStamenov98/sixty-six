@@ -41,17 +41,17 @@ bool Card::operator!=(const Card& secondCard)
 	return (color != secondCard.color || value != secondCard.value);
 }
 
-int Card::getValue()
+int Card::getValue() const
 {
 	return value;
 }
 
-Color Card::getColor()
+Color Card::getColor() const
 {
 	return color;
 }
 
-string Card::getName()
+string Card::getName() const
 {
 	switch (value)
 	{
@@ -79,7 +79,7 @@ string Card::getName()
 	}
 }
 
-string Card::getColorName()
+string Card::getColorName() const
 {
 	return getColorString(color);
 }
@@ -104,4 +104,9 @@ string getColorString(Color color)
 		return "";
 		break;
 	}
+}
+
+bool operator==(const Card& lhs, const Card& rhs)
+{
+	return (lhs.getColorName() == rhs.getColorName()) && (lhs.getValue() == rhs.getValue());
 }

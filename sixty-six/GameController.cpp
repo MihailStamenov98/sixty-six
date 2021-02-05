@@ -1,16 +1,50 @@
 #include "GameController.h"
+#include <algorithm>
+#include <random>
+#include <chrono>
+GameController::GameController()
+{
+
+	/*vector<Card> deck = getDeck();
+	vector<Card>::const_iterator first = deck.begin() + 0;
+	vector<Card>::const_iterator last = deck.begin() + 6;
+	vector<Card> newVec(first, last);
+	first = deck.begin() + 7;
+	last = deck.begin() + 13;
+	vector<Card> secVec(first, last);*/
+	vector<Card> newVec = { Card(diamonds,jack), Card(diamonds,ace), Card(hearts,ace), Card(clubs,ten), Card(clubs,jack), Card(spades,jack) };
+	vector<Card> secVec = { Card(hearts, jack), Card(hearts, queen), Card(diamonds,nine), Card(spades,king), Card(hearts,ten), Card(clubs,king) };
+
+	minPlayerCards = secVec;
+	maxPlayerCards = newVec;
+	trump = diamonds;
+	computerPlayer = new EndGamePlayer(trump);
+	humanPlayer = new HumanPlayer(trump);
+}
+
+vector<Card> GameController::getDeck()
+{
+	vector<Card> deck;
+	for (int i = 0; i < 4; ++i)
+	{
+		for (int j = 0; j < 6; ++j)
+		{
+			Card temp(colors[i], values[j]);
+			deck.push_back(temp);
+		}
+	}
+	unsigned seed = std::chrono::system_clock::now()
+		.time_since_epoch()
+		.count();
+	std::shuffle(std::begin(deck), std::end(deck), std::default_random_engine(seed));
+	return deck;
+}
+
 void GameController::printCards()
 {
-	cout << "Your cards are:";
-	for (int i = 0; i < minPlayerCards.size(); ++i)
-	{
-		cout << "(" << minPlayerCards[i].getColorName() << "," << minPlayerCards[i].getName() << ",index:" << i << "), ";
-	}
-	cout << endl << "My cards are:";
-	for (int i = 0; i < maxPlayerCards.size(); ++i)
-	{
-		cout << "(" << maxPlayerCards[i].getColorName() << "," << maxPlayerCards[i].getName() << "), ";
-	}
+	computerPlayer->printCards(maxPlayerCards);
+	humanPlayer->printCards(minPlayerCards);
+	cout << "Trump is " << getColorString(trump);
 	cout << endl;
 }
 
@@ -21,16 +55,16 @@ pair<int, int> GameController::trickComputerFirst(int computerResult, int oponen
 		return make_pair(computerResult, oponentResult);
 	}
 	printCards();
-	int cardIndex = chooseCardFirstMove();
+
+	int cardIndex = computerPlayer->chooseCardFirstMove(maxPlayerCards, minPlayerCards);
 	Card firstCard = maxPlayerCards[cardIndex];
 	maxPlayerCards.erase(maxPlayerCards.begin() + cardIndex);
 	cout << "The computer chose card: (" << firstCard.getColorName() << ", " << firstCard.getName() << ")" << endl;
-	cout << "It is your turn (enter index of your card): ";
-	cin >> cardIndex;
-	cout << endl;
+
+	cardIndex = humanPlayer->chooseCardSecondMove(firstCard, maxPlayerCards, minPlayerCards);
 	Card secondCard = minPlayerCards[cardIndex];
 	minPlayerCards.erase(minPlayerCards.begin() + cardIndex);
-	cout << "You chose card: (" << secondCard.getColorName() << ", " << secondCard.getName() << ")" << endl;
+	cout << "Human chose card: (" << secondCard.getColorName() << ", " << secondCard.getName() << ")" << endl;
 
 	if (firstCard.isGreater(secondCard, trump))
 	{
@@ -52,15 +86,14 @@ pair<int, int> GameController::trickComputerSecond(int computerResult, int opone
 	{
 		return make_pair(computerResult, oponentResult);
 	}
-	printCards();
-	cout << "It is your turn (enter index of your card): ";
-	int cardIndex;
-	cin >> cardIndex;
-	cout << endl;
+	printCards(); 
+
+	int cardIndex = humanPlayer->chooseCardFirstMove(maxPlayerCards, minPlayerCards);;
 	Card firstCard(minPlayerCards[cardIndex]);
 	minPlayerCards.erase(minPlayerCards.begin() + cardIndex);
 	cout << "You chose card: (" << firstCard.getColorName() << ", " << firstCard.getName() << ")" << endl;
-	cardIndex = chooseCardSecondMove(firstCard);
+
+	cardIndex = computerPlayer->chooseCardSecondMove(firstCard, maxPlayerCards, minPlayerCards);
 	Card secondCard = maxPlayerCards[cardIndex];
 	maxPlayerCards.erase(maxPlayerCards.begin() + cardIndex);
 	cout << "The computer chose card: (" << secondCard.getColorName() << ", " << secondCard.getName() << ")" << endl;

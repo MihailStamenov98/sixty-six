@@ -2,6 +2,7 @@
 #include<iostream>
 #include<string>
 using namespace std;
+
 enum Value
 {
 	nine = 0,
@@ -28,6 +29,8 @@ private:
 	Color color;
 	Value value;
 public:
+	friend bool operator==(const Card& lhs, const Card& rhs);
+
 	Card(Color c, Value v);
 	Card(const Card& card);
 
@@ -35,11 +38,14 @@ public:
 	
 	bool operator!=(const Card& secondCard);
 
-	int getValue();
+	int getValue() const;
 
-	Color getColor();
+	Color getColor() const;
 
-	string getName();
+	string getName() const;
 
-	string getColorName();
+	string getColorName() const;
 };
+
+const Color colors[4] = { clubs, diamonds, hearts, spades };
+const Value values[6] = { nine, jack, queen, king, ten, ace };

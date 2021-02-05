@@ -4,11 +4,18 @@
 #include<iostream>
 using namespace std;
 
-EndGamePlayer::EndGamePlayer(Color trump, vector<Card> maxPlayerCards, vector<Card> minPlayerCards): rules(trump)
+EndGamePlayer::EndGamePlayer(Color trump): rules(trump)
 {
 	this->trump = trump;
-	this->maxPlayerCards = maxPlayerCards;
-	this->minPlayerCards = minPlayerCards;
+}
+
+void EndGamePlayer::printCards(vector<Card> maxCards)
+{
+	cout << endl << "EndGamePlayer cards are are:";
+	for (int i = 0; i < maxCards.size(); ++i)
+	{
+		cout << "(" << maxCards[i].getColorName() << "," << maxCards[i].getName() << "), ";
+	}
 }
 
 int EndGamePlayer:: minSecondMove(vector<Card> maxCards, vector<Card> minCards, int alpha, int beta, int maxPoints, int minPoints, Card firstCard)
@@ -142,15 +149,16 @@ int EndGamePlayer::minFirstMove(vector<Card> maxCards, vector<Card> minCards, in
 	return value;
 }
 
-int EndGamePlayer::chooseCardFirstMove()
+int EndGamePlayer::chooseCardFirstMove(vector<Card> maxCards, vector<Card> minCards)
 {
+	cout << "It is EndGamePlayer turn:\n";
 	int value = -1000;
 	int index = -1;
-	for (int i = 0; i < maxPlayerCards.size(); ++i)
+	for (int i = 0; i < maxCards.size(); ++i)
 	{
-		vector<Card> maxCardsReduced = maxPlayerCards;
+		vector<Card> maxCardsReduced = maxCards;
 		maxCardsReduced.erase(maxCardsReduced.begin() + i);
-		int temp = minSecondMove(maxCardsReduced, minPlayerCards, -1000, 1000, 0, 0, maxPlayerCards[i]);
+		int temp = minSecondMove(maxCardsReduced, minCards, -1000, 1000, 0, 0, maxCards[i]);
 		if (value < temp)
 		{
 			value = temp;
@@ -160,28 +168,29 @@ int EndGamePlayer::chooseCardFirstMove()
 	return index;
 }
 
-int EndGamePlayer::chooseCardSecondMove(Card firstCard)
+int EndGamePlayer::chooseCardSecondMove(Card firstCard, vector<Card> maxCards, vector<Card> minCards)
 {
+	cout << "It is EndGamePlayer turn:\n";
 	int index = -1;
 	int value = -1000;
-	auto possiblePlays = rules.takeAlternatives(maxPlayerCards, firstCard);
+	auto possiblePlays = rules.takeAlternatives(maxCards, firstCard);
 	for (int i = 0; i < possiblePlays.size(); ++i)
 	{
 		vector<Card> maxCardsReduced;
-		std::copy_if(maxPlayerCards.begin(), maxPlayerCards.end(), std::back_inserter(maxCardsReduced), [possiblePlays, i](Card c) {return c != possiblePlays[i]; });
+		std::copy_if(maxCards.begin(), maxCards.end(), std::back_inserter(maxCardsReduced), [possiblePlays, i](Card c) {return c != possiblePlays[i]; });
 		int temp;
 
 		if (firstCard.isGreater(possiblePlays[i], trump))
 		{
 			int minPoints = firstCard.getValue();
 			minPoints += possiblePlays[i].getValue();
-			temp = minFirstMove(maxCardsReduced, minPlayerCards, -1000, 1000, 0, minPoints);
+			temp = minFirstMove(maxCardsReduced, minCards, -1000, 1000, 0, minPoints);
 		}
 		else
 		{
 			int maxPoints = firstCard.getValue();
 			maxPoints += possiblePlays[i].getValue();
-			temp = maxFirstMove(maxCardsReduced, minPlayerCards, -1000, 1000, maxPoints, 0);
+			temp = maxFirstMove(maxCardsReduced, minCards, -1000, 1000, maxPoints, 0);
 		}
 
 		if (value < temp)
@@ -191,7 +200,7 @@ int EndGamePlayer::chooseCardSecondMove(Card firstCard)
 		}
 	}
 	int j = 0;
-	while (maxPlayerCards[j] != possiblePlays[index])
+	while (maxCards[j] != possiblePlays[index])
 	{
 		++j;
 	}
