@@ -1,3 +1,4 @@
-﻿  HumanPlayer.cpp
-D:\MPStar\КН\Година 4\Семестър 1\Изкуствен интелект\sixty-six\sixty-six\HumanPlayer.cpp(32,20): warning C4018: '<': signed/unsigned mismatch
+﻿  Main.cpp
+D:\MPStar\КН\Година 4\Семестър 1\Изкуствен интелект\sixty-six\sixty-six\Main.cpp(14,20): warning C4018: '<': signed/unsigned mismatch
+D:\MPStar\КН\Година 4\Семестър 1\Изкуствен интелект\sixty-six\sixty-six\Main.cpp(19,20): warning C4018: '<': signed/unsigned mismatch
   sixty-six.vcxproj -> D:\MPStar\КН\Година 4\Семестър 1\Изкуствен интелект\sixty-six\Debug\sixty-six.exe

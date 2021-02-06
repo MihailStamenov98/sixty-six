@@ -1,5 +1,4 @@
 #include "Card.h"
-
 Card::Card(Color c, Value v)
 {
 	color = c;
@@ -109,4 +108,42 @@ string getColorString(Color color)
 bool operator==(const Card& lhs, const Card& rhs)
 {
 	return (lhs.getColorName() == rhs.getColorName()) && (lhs.getValue() == rhs.getValue());
+}
+
+bool operator<(const Card& lhs, const Card& rhs)
+{
+	if (lhs.color < rhs.color)
+		return true;
+	else if (lhs.color > rhs.color)
+		return false;
+	else
+		return lhs.getValue() < rhs.getValue();
+}
+
+vector<Card> Card::getRemainingCards(vector<Card> passedCards)
+{
+	vector<Card> result;
+	int begin = 0;
+	for (int i = 0; i < passedCards.size(); ++i)
+	{
+		cout << "befor while: " << begin<<endl;
+		while (deck[begin] < passedCards[i])
+		{
+			result.push_back(deck[begin]);
+			++begin;
+		}
+		cout << "befor if: " << begin << endl;
+		if (begin < deck.size() - 1)
+		{
+			begin++;
+		}
+	}
+	cout << "after for: " << begin << endl;
+	while (begin < deck.size() && passedCards[passedCards.size() - 1] < deck[begin])
+	{
+		result.push_back(deck[begin]);
+		++begin;
+	}
+
+	return result;
 }
