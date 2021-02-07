@@ -3,16 +3,9 @@
 #include <math.h> 
 #include<vector>
 
-class MonteCarloPlayer: Player
+class MonteCarloPlayer
 {
 private:
-
-	enum Anounces
-	{
-		no = 0,
-		twenty = 20,
-		forty = 40
-	};
 
 	struct Node
 	{
@@ -48,14 +41,13 @@ private:
 	int chooseChild(Node* root);
 
 	void deleteTree(Node* root);
-	void startIterationsFirst(vector<Card> myCards, vector<Card> remainingCards, 
-								int initialMaxPoints, int initialMinPoints, bool initialHasTrunkMax, bool initialHasTrunkMin);
-	void startIterationsSecond(Card firstCard, vector<Card> myCards, vector<Card> remainingCards, 
-								int initialMaxPoints, int initialMinPoints, bool initialHasTrunkMax, bool initialHasTrunkMin);
+	
 public:
 	MonteCarloPlayer(Color trump, int iterations);
 	void printCards(vector<Card> maxCards);
-	int chooseCardFirstMove(vector<Card> maxCards, vector<Card> minCards);
-	int chooseCardSecondMove(Card firstCard, vector<Card> maxCards, vector<Card> minCards);
+	int startIterationsFirst(vector<Card> myCards, vector<Card> remainingCards,
+		int initialMaxPoints, int initialMinPoints, bool initialHasTrunkMax, bool initialHasTrunkMin);
+	int startIterationsSecond(Card firstCard, vector<Card> myCards, vector<Card> remainingCards,
+		int initialMaxPoints, int initialMinPoints, bool initialHasTrunkMax, bool initialHasTrunkMin);
 
 };

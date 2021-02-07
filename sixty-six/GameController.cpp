@@ -18,7 +18,7 @@ GameController::GameController()
 	minPlayerCards = secVec;
 	maxPlayerCards = newVec;
 	trump = diamonds;
-	computerPlayer = new EndGamePlayer(trump);
+	computerPlayer = new MonteCarloPlayer(trump, 10000);
 	humanPlayer = new HumanPlayer(trump);
 }
 
@@ -55,8 +55,8 @@ pair<int, int> GameController::trickComputerFirst(int computerResult, int oponen
 		return make_pair(computerResult, oponentResult);
 	}
 	printCards();
-
-	int cardIndex = computerPlayer->chooseCardFirstMove(maxPlayerCards, minPlayerCards, hasTrickMax, hasTrickMin);
+	///should pass remaining cards not minPlayerCards
+	int cardIndex = computerPlayer->startIterationsFirst(maxPlayerCards, minPlayerCards, computerResult, oponentResult, hasTrickMax, hasTrickMin);
 	Card firstCard = maxPlayerCards[cardIndex];
 	maxPlayerCards.erase(maxPlayerCards.begin() + cardIndex);
 	cout << "The computer chose card: (" << firstCard.getColorName() << ", " << firstCard.getName() << ")" << endl;
@@ -95,7 +95,8 @@ pair<int, int> GameController::trickComputerSecond(int computerResult, int opone
 	minPlayerCards.erase(minPlayerCards.begin() + cardIndex);
 	cout << "You chose card: (" << firstCard.getColorName() << ", " << firstCard.getName() << ")" << endl;
 
-	cardIndex = computerPlayer->chooseCardSecondMove(firstCard, maxPlayerCards, minPlayerCards, hasTrickMax, hasTrickMin);
+	///should pass remaining cards not minPlayerCards
+	cardIndex = computerPlayer->startIterationsSecond(firstCard, maxPlayerCards, minPlayerCards, computerResult, oponentResult, hasTrickMax, hasTrickMin);
 	Card secondCard = maxPlayerCards[cardIndex];
 	maxPlayerCards.erase(maxPlayerCards.begin() + cardIndex);
 	cout << "The computer chose card: (" << secondCard.getColorName() << ", " << secondCard.getName() << ")" << endl;

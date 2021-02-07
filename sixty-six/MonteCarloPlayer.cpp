@@ -1,11 +1,27 @@
 #include "MonteCarloPlayer.h"
 #include "EndGamePlayer.h"
 #include<random>
+
+MonteCarloPlayer::MonteCarloPlayer(Color trump, int iterations)
+{
+	this->trump = trump;
+	this->iterations = iterations;
+}
+
+void MonteCarloPlayer::printCards(vector<Card> maxCards)
+{
+	cout << endl << "EndGamePlayer cards are are:";
+	for (int i = 0; i < maxCards.size(); ++i)
+	{
+		cout << "(" << maxCards[i].getColorName() << "," << maxCards[i].getName() << "), ";
+	}
+}
+
 double MonteCarloPlayer::evaluateNode(double t, int N, int ni)
 {
 	if (ni == 0)
 		return 1000000;
-	return (t / (double)ni) + sqrt(log(double(N)) / double(ni));
+	return (t / (double)ni) + 2 * sqrt(log(double(N)) / double(ni));
 }
 
 int MonteCarloPlayer::getRandomIndex(int elementsCount)
@@ -235,7 +251,7 @@ void MonteCarloPlayer::deleteTree(Node* root)
 }
 
 
-void  MonteCarloPlayer::startIterationsFirst(vector<Card> myCards, vector<Card> remainingCards, int initialMaxPoints, int initialMinPoints, bool initialHasTrunkMax, bool initialHasTrunkMin)
+int  MonteCarloPlayer::startIterationsFirst(vector<Card> myCards, vector<Card> remainingCards, int initialMaxPoints, int initialMinPoints, bool initialHasTrunkMax, bool initialHasTrunkMin)
 {
 	Node* root = new Node();
 	root->t = 0;
@@ -248,10 +264,12 @@ void  MonteCarloPlayer::startIterationsFirst(vector<Card> myCards, vector<Card> 
 		hasTrunkMin = initialHasTrunkMin;
 		auto x = treeExploaringFirstMove(root, myCards, remainingCards);
 	}
+	int bestMove = chooseChild(root);
 	deleteTree(root);
+	return bestMove;
 }
 
-void MonteCarloPlayer::startIterationsSecond(Card firstCard, vector<Card> myCards, vector<Card> remainingCards, int initialMaxPoints, int initialMinPoints, bool initialHasTrunkMax, bool initialHasTrunkMin)
+int MonteCarloPlayer::startIterationsSecond(Card firstCard, vector<Card> myCards, vector<Card> remainingCards, int initialMaxPoints, int initialMinPoints, bool initialHasTrunkMax, bool initialHasTrunkMin)
 {
 	Node* root = new Node();
 	root->t = 0;
@@ -264,7 +282,9 @@ void MonteCarloPlayer::startIterationsSecond(Card firstCard, vector<Card> myCard
 		hasTrunkMin = initialHasTrunkMin;
 		auto x = treeExploaringSecondMove(firstCard, root, myCards, remainingCards);
 	}
+	int bestMove = chooseChild(root);
 	deleteTree(root);
+	return bestMove;
 }
 
 vector<MonteCarloPlayer::Node*> MonteCarloPlayer::createChildren(int count)
@@ -280,3 +300,18 @@ vector<MonteCarloPlayer::Node*> MonteCarloPlayer::createChildren(int count)
 	return children;
 }
 
+int MonteCarloPlayer::chooseChild(Node* root)
+{
+	int bestChild = 0;
+	double bestValue = evaluateNode(root->children[0]->t, root->n, root->children[0]->n);
+	for (int i = 1; i < root->children.size(); ++i)
+	{
+		double currentValue = evaluateNode(root->children[i]->t, root->n, root->children[i]->n);
+		if (bestValue < currentValue)
+		{
+			bestChild = i;
+			bestValue = currentValue;
+		}
+	}
+	return bestChild;
+}

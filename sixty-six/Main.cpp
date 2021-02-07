@@ -6,8 +6,8 @@ using namespace std;
 
 int main()
 {
-	/*GameController game;
-	game.play()*/;
+	GameController game;
+	game.play();
 
 	return 0;
 }
