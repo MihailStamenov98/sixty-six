@@ -11,7 +11,7 @@ private:
 	int minSecondMove(vector<Card> maxCards, vector<Card> minCards, int alpha, int beta, int maxPoints, int minPoints, Card firstCard, bool hasTrickMax, bool hasTrickMin);
 	int minFirstMove(vector<Card> maxCards, vector<Card> minCards, int alpha, int beta, int maxPoints, int minPoints, bool hasTrickMax, bool hasTrickMin);
 	int getGameValue(int maxPoints, int minPoints, bool hasTrickMax, bool hasTrickMin);
-
+	int suitAnnouncements(Color trump, vector<Card> Cards, Card playedCard);
 public:
 	EndGamePlayer(Color trump);
 	int maxFirstMove(vector<Card> maxCards, vector<Card> minCards, int alpha, int beta, int maxPoints, int minPoints, bool hasTrickMax, bool hasTrickMin);

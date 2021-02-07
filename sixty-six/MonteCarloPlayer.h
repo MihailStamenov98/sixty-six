@@ -34,17 +34,24 @@ private:
 	double otherPlayerSimulationResposnse(Card firstCard, vector<Card> myCards, vector<Card> remainingCards);
 	double rollOutFirstPlay(vector<Card> myCards, vector<Card> remainingCards);
 	double rollOutSecondPlay(Card firstCard, vector<Card> myCards, vector<Card> remainingCards);
+
+
 	double evaluateNode(double t, int N, int ni);
 
-	vector<Node*> createChildren(vector<Card> cards);
-	vector<Card> constructMyCardsForChild(int i, vector<Card> myCards);
-	vector<Card> constructRemainingCardsForChild(int i, vector<Card> remainingCards);
+	vector<Node*> createChildren(int count);
 
 	double treeExploaringFirstMove(Node* root, vector<Card> myCards, vector<Card> remainingCards);
-	Node* chooseChilde(Node* root);
+	double treeExploaringSecondMove(Card firstCard, Node* root, vector<Card> myCards, vector<Card> remainingCards);
+	double treeExploaringOponentSecondMove(Card firstCard, Node* root, vector<Card> myCards, vector<Card> remainingCards);
+	double treeExploaringOponentFirstMove(Node* root, vector<Card> myCards, vector<Card> remainingCards);
+
+	int chooseChild(Node* root);
 
 	void deleteTree(Node* root);
-	void startIterationsFirst(vector<Card> myCards, vector<Card> remainingCards, int initialMaxPoints, int initialMinPoints, bool initialHasTrunkMax, bool initialHasTrunkMin);
+	void startIterationsFirst(vector<Card> myCards, vector<Card> remainingCards, 
+								int initialMaxPoints, int initialMinPoints, bool initialHasTrunkMax, bool initialHasTrunkMin);
+	void startIterationsSecond(Card firstCard, vector<Card> myCards, vector<Card> remainingCards, 
+								int initialMaxPoints, int initialMinPoints, bool initialHasTrunkMax, bool initialHasTrunkMin);
 public:
 	MonteCarloPlayer(Color trump, int iterations);
 	void printCards(vector<Card> maxCards);

@@ -1,20 +1,4 @@
-﻿  EndGamePlayer.cpp
-D:\MPStar\КН\Година 4\Семестър 1\Изкуствен интелект\sixty-six\sixty-six\EndGamePlayer.cpp(15,20): warning C4018: '<': signed/unsigned mismatch
-D:\MPStar\КН\Година 4\Семестър 1\Изкуствен интелект\sixty-six\sixty-six\EndGamePlayer.cpp(80,20): warning C4018: '<': signed/unsigned mismatch
-D:\MPStar\КН\Година 4\Семестър 1\Изкуствен интелект\sixty-six\sixty-six\EndGamePlayer.cpp(132,20): warning C4018: '<': signed/unsigned mismatch
-D:\MPStar\КН\Година 4\Семестър 1\Изкуствен интелект\sixty-six\sixty-six\EndGamePlayer.cpp(167,20): warning C4018: '<': signed/unsigned mismatch
-D:\MPStar\КН\Година 4\Семестър 1\Изкуствен интелект\sixty-six\sixty-six\EndGamePlayer.cpp(185,20): warning C4018: '<': signed/unsigned mismatch
-D:\MPStar\КН\Година 4\Семестър 1\Изкуствен интелект\sixty-six\sixty-six\EndGamePlayer.cpp(205,20): warning C4018: '<': signed/unsigned mismatch
-D:\MPStar\КН\Година 4\Семестър 1\Изкуствен интелект\sixty-six\sixty-six\EndGamePlayer.cpp(225,20): warning C4018: '<': signed/unsigned mismatch
-  GameController.cpp
-D:\MPStar\КН\Година 4\Семестър 1\Изкуствен интелект\sixty-six\sixty-six\GameController.cpp(36,16): warning C4244: 'initializing': conversion from '_Rep' to 'unsigned int', possible loss of data
-          with
-          [
-              _Rep=std::chrono::system_clock::rep
-          ]
-  HumanPlayer.cpp
-D:\MPStar\КН\Година 4\Семестър 1\Изкуствен интелект\sixty-six\sixty-six\HumanPlayer.cpp(32,20): warning C4018: '<': signed/unsigned mismatch
-  Main.cpp
-  MonteCarloPlayer.cpp
-  Generating Code...
-  sixty-six.vcxproj -> D:\MPStar\КН\Година 4\Семестър 1\Изкуствен интелект\sixty-six\Debug\sixty-six.exe
+﻿  MonteCarloPlayer.cpp
+D:\MPStar\КН\Година 4\Семестър 1\Изкуствен интелект\sixty-six\sixty-six\MonteCarloPlayer.cpp(231,20): warning C4018: '<': signed/unsigned mismatch
+MonteCarloPlayer.obj : error LNK2019: unresolved external symbol "private: int __thiscall MonteCarloPlayer::chooseChild(struct MonteCarloPlayer::Node *)" (?chooseChild@MonteCarloPlayer@@AAEHPAUNode@1@@Z) referenced in function "private: double __thiscall MonteCarloPlayer::treeExploaringFirstMove(struct MonteCarloPlayer::Node *,class std::vector<class Card,class std::allocator<class Card> >,class std::vector<class Card,class std::allocator<class Card> >)" (?treeExploaringFirstMove@MonteCarloPlayer@@AAENPAUNode@1@V?$vector@VCard@@V?$allocator@VCard@@@std@@@std@@1@Z)
+D:\MPStar\КН\Година 4\Семестър 1\Изкуствен интелект\sixty-six\Debug\sixty-six.exe : fatal error LNK1120: 1 unresolved externals

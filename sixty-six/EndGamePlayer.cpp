@@ -54,6 +54,43 @@ int EndGamePlayer::getGameValue(int maxPoints, int minPoints, bool hasTrickMax, 
 	}
 }
 
+int EndGamePlayer::suitAnnouncements(Color trump, vector<Card> Cards, Card playedCard)
+{
+	if (playedCard.getValue() == Value::king)
+	{
+		for (int i = 0; i < Cards.size(); ++i)
+		{
+			if (Cards[i].getValue() == Value::queen)
+			{
+				if (Cards[i].getColor() == playedCard.getColor())
+				{
+					if (trump == playedCard.getColor())
+						return 40;
+					else
+						return 20;
+				}
+			}
+		}
+	}
+	else if (playedCard.getValue() == Value::queen)
+	{
+		for (int i = 0; i < Cards.size(); ++i)
+		{
+			if (Cards[i].getValue() == Value::king)
+			{
+				if (Cards[i].getColor() == playedCard.getColor())
+				{
+					if (trump == playedCard.getColor())
+						return 40;
+					else
+						return 20;
+				}
+			}
+		}
+	}
+	return 0;
+}
+
 int EndGamePlayer:: minSecondMove(vector<Card> maxCards, vector<Card> minCards, int alpha, int beta, int maxPoints, int minPoints, Card firstCard, bool hasTrickMax, bool hasTrickMin)
 {
 	if (maxCards.size() == 0)
@@ -168,6 +205,9 @@ int EndGamePlayer::maxFirstMove(vector<Card> maxCards, vector<Card> minCards, in
 	{
 		vector<Card> maxCardsReduced = maxCards;
 		maxCardsReduced.erase(maxCardsReduced.begin() + i);
+
+		maxPoints += suitAnnouncements(trump, maxCards, maxCards[i]);
+
 		int temp = minSecondMove(maxCardsReduced, minCards, alpha, beta, maxPoints, minPoints, maxCards[i], hasTrickMax, hasTrickMin);
 		value = max(value, temp);
 		alpha = max(alpha, value);
@@ -186,6 +226,9 @@ int EndGamePlayer::minFirstMove(vector<Card> maxCards, vector<Card> minCards, in
 	{
 		vector<Card> minCardsReduced = minCards;
 		minCardsReduced.erase(minCardsReduced.begin() + i);
+
+		minPoints += suitAnnouncements(trump, minCards, minCards[i]);
+
 		int temp = minSecondMove(minCardsReduced, minCards, alpha, beta, maxPoints, minPoints, minCards[i], hasTrickMax, hasTrickMin);
 		value = min(value, temp);
 		beta = min(beta, value);
