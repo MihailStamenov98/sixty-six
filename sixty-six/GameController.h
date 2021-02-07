@@ -10,8 +10,8 @@ private:
 	Color trump;
 	Player* computerPlayer;//uses maxCards
 	Player* humanPlayer;
-	pair<int, int> trickComputerFirst(int computerResult, int oponentResult);
-	pair<int, int> trickComputerSecond(int computerResult, int oponentResult);
+	pair<int, int> trickComputerFirst(int computerResult, int oponentResult, bool hasTrickMax, bool hasTrickMin);
+	pair<int, int> trickComputerSecond(int computerResult, int oponentResult, bool hasTrickMax, bool hasTrickMin);
 	vector<Card> getDeck();
 public:
 	GameController();

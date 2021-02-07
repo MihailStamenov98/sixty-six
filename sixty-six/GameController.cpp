@@ -48,7 +48,7 @@ void GameController::printCards()
 	cout << endl;
 }
 
-pair<int, int> GameController::trickComputerFirst(int computerResult, int oponentResult)
+pair<int, int> GameController::trickComputerFirst(int computerResult, int oponentResult, bool hasTrickMax, bool hasTrickMin)
 {
 	if (maxPlayerCards.size() == 0)
 	{
@@ -56,12 +56,12 @@ pair<int, int> GameController::trickComputerFirst(int computerResult, int oponen
 	}
 	printCards();
 
-	int cardIndex = computerPlayer->chooseCardFirstMove(maxPlayerCards, minPlayerCards);
+	int cardIndex = computerPlayer->chooseCardFirstMove(maxPlayerCards, minPlayerCards, hasTrickMax, hasTrickMin);
 	Card firstCard = maxPlayerCards[cardIndex];
 	maxPlayerCards.erase(maxPlayerCards.begin() + cardIndex);
 	cout << "The computer chose card: (" << firstCard.getColorName() << ", " << firstCard.getName() << ")" << endl;
 
-	cardIndex = humanPlayer->chooseCardSecondMove(firstCard, maxPlayerCards, minPlayerCards);
+	cardIndex = humanPlayer->chooseCardSecondMove(firstCard, maxPlayerCards, minPlayerCards, hasTrickMax, hasTrickMin);
 	Card secondCard = minPlayerCards[cardIndex];
 	minPlayerCards.erase(minPlayerCards.begin() + cardIndex);
 	cout << "Human chose card: (" << secondCard.getColorName() << ", " << secondCard.getName() << ")" << endl;
@@ -70,17 +70,19 @@ pair<int, int> GameController::trickComputerFirst(int computerResult, int oponen
 	{
 		computerResult += firstCard.getValue();
 		computerResult += secondCard.getValue();
-		return trickComputerFirst(computerResult, oponentResult);
+		hasTrickMax = true;
+		return trickComputerFirst(computerResult, oponentResult, hasTrickMax, hasTrickMin);
 	}
 	else
 	{
 		oponentResult += firstCard.getValue();
 		oponentResult += secondCard.getValue();
-		return trickComputerSecond(computerResult, oponentResult);
+		hasTrickMin = true;
+		return trickComputerSecond(computerResult, oponentResult, hasTrickMax, hasTrickMin);
 	}
 }
 
-pair<int, int> GameController::trickComputerSecond(int computerResult, int oponentResult)
+pair<int, int> GameController::trickComputerSecond(int computerResult, int oponentResult, bool hasTrickMax, bool hasTrickMin)
 {
 	if (maxPlayerCards.size() == 0)
 	{
@@ -88,12 +90,12 @@ pair<int, int> GameController::trickComputerSecond(int computerResult, int opone
 	}
 	printCards(); 
 
-	int cardIndex = humanPlayer->chooseCardFirstMove(maxPlayerCards, minPlayerCards);;
+	int cardIndex = humanPlayer->chooseCardFirstMove(maxPlayerCards, minPlayerCards, hasTrickMax, hasTrickMin);;
 	Card firstCard(minPlayerCards[cardIndex]);
 	minPlayerCards.erase(minPlayerCards.begin() + cardIndex);
 	cout << "You chose card: (" << firstCard.getColorName() << ", " << firstCard.getName() << ")" << endl;
 
-	cardIndex = computerPlayer->chooseCardSecondMove(firstCard, maxPlayerCards, minPlayerCards);
+	cardIndex = computerPlayer->chooseCardSecondMove(firstCard, maxPlayerCards, minPlayerCards, hasTrickMax, hasTrickMin);
 	Card secondCard = maxPlayerCards[cardIndex];
 	maxPlayerCards.erase(maxPlayerCards.begin() + cardIndex);
 	cout << "The computer chose card: (" << secondCard.getColorName() << ", " << secondCard.getName() << ")" << endl;
@@ -102,13 +104,15 @@ pair<int, int> GameController::trickComputerSecond(int computerResult, int opone
 	{
 		oponentResult += firstCard.getValue();
 		oponentResult += secondCard.getValue();
-		return trickComputerSecond(computerResult, oponentResult);
+		hasTrickMin = true;
+		return trickComputerSecond(computerResult, oponentResult, hasTrickMax, hasTrickMin);
 	}
 	else
 	{
 		computerResult += firstCard.getValue();
 		computerResult += secondCard.getValue();
-		return trickComputerFirst(computerResult, oponentResult);
+		hasTrickMax = true;
+		return trickComputerFirst(computerResult, oponentResult, hasTrickMax, hasTrickMin);
 	}
 }
 
@@ -119,12 +123,12 @@ void GameController::play()
 	cin >> response;
 	if (response == 'n')
 	{
-		auto result = trickComputerFirst(0, 0);
+		auto result = trickComputerFirst(0, 0, false, false);
 		cout << "comp result: " << result.first << ", your result: " << result.second << endl;
 	}
 	else
 	{
-		auto result = trickComputerSecond(0, 0);
+		auto result = trickComputerSecond(0, 0, false, false);
 		cout << result.first << " " << result.second << endl;;
 	}
 }

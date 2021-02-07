@@ -10,6 +10,6 @@ private:
 public:
 	HumanPlayer(Color trump);
 	void printCards(vector<Card> maxCards);
-	int chooseCardFirstMove(vector<Card> maxCards, vector<Card> minCards);
-	int chooseCardSecondMove(Card firstCard, vector<Card> maxCards, vector<Card> minCards);
+	int chooseCardFirstMove(vector<Card> maxCards, vector<Card> minCards, bool hasTrickMax, bool hasTrickMin);
+	int chooseCardSecondMove(Card firstCard, vector<Card> maxCards, vector<Card> minCards, bool hasTrickMax, bool hasTrickMin);
 };
