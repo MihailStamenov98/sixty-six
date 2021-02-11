@@ -5,7 +5,7 @@
 GameController::GameController()
 {
 
-	deck = getDeck();
+	/*deck = getDeck();
 	vector<Card>::const_iterator first = deck.begin() + 0;
 	vector<Card>::const_iterator last = deck.begin() + 6;
 	vector<Card> newVec(first, last);
@@ -19,7 +19,17 @@ GameController::GameController()
 	maxPlayerCards = newVec;
 	trump = deck.back().getColor();
 	computerPlayer = new ComputerPlayer(trump);
+	humanPlayer = new HumanPlayer(trump);*/
+
+
+	minPlayerCards = { Card(hearts,nine), Card(clubs,nine),Card(diamonds,jack),Card(spades,king),Card(hearts,jack), Card(clubs, ten)};
+	maxPlayerCards = { Card(spades,queen), Card(hearts,ten),Card(clubs,king),Card(clubs,ace),Card(clubs,queen), Card(hearts, king)};
+	deck = { Card(hearts,queen), Card(diamonds,king),Card(spades,jack),Card(spades,nine),Card(spades,ten), Card(spades, ace),
+			 Card(diamonds,queen), Card(diamonds,ten),Card(diamonds,ace),Card(hearts,ace),Card(clubs,jack), Card(diamonds, nine) };
+	trump = deck.back().getColor();
+	computerPlayer = new ComputerPlayer(trump);
 	humanPlayer = new HumanPlayer(trump);
+
 }
 
 int GameController::suitAnnouncements(vector<Card> Cards, Card playedCard)
@@ -90,7 +100,7 @@ void GameController::printCards()
 {
 	computerPlayer->printCards(maxPlayerCards);
 	humanPlayer->printCards(minPlayerCards);
-	cout << "Trump is " << getColorString(trump);
+	cout << "Last Card is: (" << deck.back().getColorName()<<", " << deck.back().getName()<<")";
 	cout << endl;
 }
 
