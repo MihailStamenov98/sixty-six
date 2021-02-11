@@ -5,21 +5,58 @@
 GameController::GameController()
 {
 
-	/*vector<Card> deck = getDeck();
+	deck = getDeck();
 	vector<Card>::const_iterator first = deck.begin() + 0;
 	vector<Card>::const_iterator last = deck.begin() + 6;
 	vector<Card> newVec(first, last);
+	deck.erase(first, last);
 	first = deck.begin() + 7;
 	last = deck.begin() + 13;
-	vector<Card> secVec(first, last);*/
-	vector<Card> newVec = { Card(diamonds,jack), Card(diamonds,ace), Card(hearts,ace), Card(clubs,ten), Card(clubs,jack), Card(spades,jack) };
-	vector<Card> secVec = { Card(hearts, jack), Card(hearts, queen), Card(diamonds,nine), Card(spades,king), Card(hearts,ten), Card(clubs,king) };
+	vector<Card> secVec(first, last);
+	deck.erase(first, last);
 
 	minPlayerCards = secVec;
 	maxPlayerCards = newVec;
-	trump = diamonds;
-	computerPlayer = new MonteCarloPlayer(trump, 10000);
+	trump = deck.back().getColor();
+	computerPlayer = new ComputerPlayer(trump);
 	humanPlayer = new HumanPlayer(trump);
+}
+
+int GameController::suitAnnouncements(vector<Card> Cards, Card playedCard)
+{
+	if (playedCard.getValue() == Value::king)
+	{
+		for (int i = 0; i < Cards.size(); ++i)
+		{
+			if (Cards[i].getValue() == Value::queen)
+			{
+				if (Cards[i].getColor() == playedCard.getColor())
+				{
+					if (trump == playedCard.getColor())
+						return 40;
+					else
+						return 20;
+				}
+			}
+		}
+	}
+	else if (playedCard.getValue() == Value::queen)
+	{
+		for (int i = 0; i < Cards.size(); ++i)
+		{
+			if (Cards[i].getValue() == Value::king)
+			{
+				if (Cards[i].getColor() == playedCard.getColor())
+				{
+					if (trump == playedCard.getColor())
+						return 40;
+					else
+						return 20;
+				}
+			}
+		}
+	}
+	return 0;
 }
 
 vector<Card> GameController::getDeck()
@@ -40,6 +77,15 @@ vector<Card> GameController::getDeck()
 	return deck;
 }
 
+vector<Card> GameController::getRemainingCards()
+{
+	vector<Card> remainingCards;
+	remainingCards.insert(remainingCards.end(), minPlayerCards.begin(), minPlayerCards.end());
+	remainingCards.insert(remainingCards.end(), deck.begin(), deck.end());
+	return remainingCards;
+}
+
+
 void GameController::printCards()
 {
 	computerPlayer->printCards(maxPlayerCards);
@@ -48,22 +94,30 @@ void GameController::printCards()
 	cout << endl;
 }
 
-pair<int, int> GameController::trickComputerFirst(int computerResult, int oponentResult, bool hasTrickMax, bool hasTrickMin)
+bool GameController::trickComputerFirst()
 {
-	if (maxPlayerCards.size() == 0)
-	{
-		return make_pair(computerResult, oponentResult);
-	}
 	printCards();
 	///should pass remaining cards not minPlayerCards
-	int cardIndex = computerPlayer->startIterationsFirst(maxPlayerCards, minPlayerCards, computerResult, oponentResult, hasTrickMax, hasTrickMin);
+	int cardIndex = computerPlayer->chooseCardFirstMove(maxPlayerCards, getRemainingCards(), computerResult, oponentResult, hasTrickMax, hasTrickMin);
 	Card firstCard = maxPlayerCards[cardIndex];
 	maxPlayerCards.erase(maxPlayerCards.begin() + cardIndex);
+	int anaunce = suitAnnouncements(maxPlayerCards, firstCard);
+	if (anaunce > 0)
+	{
+		cout << "Computer has anaunce: " << anaunce << endl;
+	}
+	computerResult += anaunce;
 	cout << "The computer chose card: (" << firstCard.getColorName() << ", " << firstCard.getName() << ")" << endl;
 
-	cardIndex = humanPlayer->chooseCardSecondMove(firstCard, maxPlayerCards, minPlayerCards, hasTrickMax, hasTrickMin);
+	cardIndex = humanPlayer->chooseCardSecondMove(firstCard, maxPlayerCards, minPlayerCards,computerResult, oponentResult, hasTrickMax, hasTrickMin);
 	Card secondCard = minPlayerCards[cardIndex];
 	minPlayerCards.erase(minPlayerCards.begin() + cardIndex);
+	anaunce = suitAnnouncements(minPlayerCards, secondCard);
+	if (anaunce > 0)
+	{
+		cout << "Human has anaunce: " << anaunce << endl;
+	}
+	oponentResult += anaunce;
 	cout << "Human chose card: (" << secondCard.getColorName() << ", " << secondCard.getName() << ")" << endl;
 
 	if (firstCard.isGreater(secondCard, trump))
@@ -71,34 +125,42 @@ pair<int, int> GameController::trickComputerFirst(int computerResult, int oponen
 		computerResult += firstCard.getValue();
 		computerResult += secondCard.getValue();
 		hasTrickMax = true;
-		return trickComputerFirst(computerResult, oponentResult, hasTrickMax, hasTrickMin);
+		return true;
 	}
 	else
 	{
 		oponentResult += firstCard.getValue();
 		oponentResult += secondCard.getValue();
 		hasTrickMin = true;
-		return trickComputerSecond(computerResult, oponentResult, hasTrickMax, hasTrickMin);
+		return false;
 	}
 }
 
-pair<int, int> GameController::trickComputerSecond(int computerResult, int oponentResult, bool hasTrickMax, bool hasTrickMin)
+bool GameController::trickComputerSecond()
 {
-	if (maxPlayerCards.size() == 0)
-	{
-		return make_pair(computerResult, oponentResult);
-	}
 	printCards(); 
 
-	int cardIndex = humanPlayer->chooseCardFirstMove(maxPlayerCards, minPlayerCards, hasTrickMax, hasTrickMin);;
-	Card firstCard(minPlayerCards[cardIndex]);
+	int cardIndex = humanPlayer->chooseCardFirstMove(maxPlayerCards, minPlayerCards,computerResult, oponentResult, hasTrickMax, hasTrickMin);;
+	Card firstCard = minPlayerCards[cardIndex];
 	minPlayerCards.erase(minPlayerCards.begin() + cardIndex);
+	int anaunce = suitAnnouncements(minPlayerCards, firstCard);
+	if (anaunce > 0)
+	{
+		cout << "Human has anaunce: " << anaunce << endl;
+	}
+	oponentResult += anaunce;
 	cout << "You chose card: (" << firstCard.getColorName() << ", " << firstCard.getName() << ")" << endl;
 
 	///should pass remaining cards not minPlayerCards
-	cardIndex = computerPlayer->startIterationsSecond(firstCard, maxPlayerCards, minPlayerCards, computerResult, oponentResult, hasTrickMax, hasTrickMin);
+	cardIndex = computerPlayer->chooseCardSecondMove(firstCard, maxPlayerCards, getRemainingCards(), computerResult, oponentResult, hasTrickMax, hasTrickMin);
 	Card secondCard = maxPlayerCards[cardIndex];
 	maxPlayerCards.erase(maxPlayerCards.begin() + cardIndex);
+	anaunce = suitAnnouncements(maxPlayerCards, secondCard);
+	if (anaunce > 0)
+	{
+		cout << "Computer has anaunce: " << anaunce << endl;
+	}
+	computerResult += anaunce;
 	cout << "The computer chose card: (" << secondCard.getColorName() << ", " << secondCard.getName() << ")" << endl;
 
 	if (firstCard.isGreater(secondCard, trump))
@@ -106,30 +168,60 @@ pair<int, int> GameController::trickComputerSecond(int computerResult, int opone
 		oponentResult += firstCard.getValue();
 		oponentResult += secondCard.getValue();
 		hasTrickMin = true;
-		return trickComputerSecond(computerResult, oponentResult, hasTrickMax, hasTrickMin);
+		return false;
 	}
 	else
 	{
 		computerResult += firstCard.getValue();
 		computerResult += secondCard.getValue();
 		hasTrickMax = true;
-		return trickComputerFirst(computerResult, oponentResult, hasTrickMax, hasTrickMin);
+		return true;
 	}
 }
+
+bool GameController::trickPlay(bool isComuterFirst)
+{
+	if (isComuterFirst)
+	{
+		isComuterFirst = trickComputerFirst();
+	}
+	else
+	{
+		isComuterFirst = trickComputerSecond();
+	}
+
+	if (!isGAmeClosed)
+	{
+		if (isComuterFirst)
+		{
+			maxPlayerCards.push_back(deck[0]);
+			deck.erase(deck.begin());
+			minPlayerCards.push_back(deck[0]);
+			deck.erase(deck.begin());
+		}
+		else
+		{
+			minPlayerCards.push_back(deck[0]);
+			deck.erase(deck.begin());
+			maxPlayerCards.push_back(deck[0]);
+			deck.erase(deck.begin());
+		}
+	}
+	return isComuterFirst;
+}
+
 
 void GameController::play()
 {
 	cout << "Do you want to be first? (y/n)";
 	char response;
 	cin >> response;
-	if (response == 'n')
+	auto iscomputerFirst = (response == 'n');
+
+	while (maxPlayerCards.size() != 0)
 	{
-		auto result = trickComputerFirst(0, 0, false, false);
-		cout << "comp result: " << result.first << ", your result: " << result.second << endl;
+		iscomputerFirst = trickPlay(iscomputerFirst);
 	}
-	else
-	{
-		auto result = trickComputerSecond(0, 0, false, false);
-		cout << result.first << " " << result.second << endl;;
-	}
+
+	cout << "comp result: " << computerResult << ", your result: " << oponentResult << endl;
 }

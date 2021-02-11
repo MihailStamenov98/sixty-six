@@ -147,9 +147,11 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MonteCarloPlayer.cpp" />
     <ClCompile Include="RulesClosed.cpp" />
+    <ClCompile Include="ComputerPlayer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Card.h" />
+    <ClInclude Include="ComputerPlayer.h" />
     <ClInclude Include="EndGamePlayer.h" />
     <ClInclude Include="GameController.h" />
     <ClInclude Include="HumanPlayer.h" />

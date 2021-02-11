@@ -4,7 +4,7 @@ HumanPlayer::HumanPlayer(Color trump): rules(trump)
 	this->trump = trump;
 }
 
-int HumanPlayer::chooseCardFirstMove(vector<Card> maxCards, vector<Card> minCards, bool hasTrickMax, bool hasTrickMin)
+int HumanPlayer::chooseCardFirstMove(vector<Card> maxCards, vector<Card> minCards, int maxPoints, int minPoints, bool hasTrickMax, bool hasTrickMin)
 {
 	cout << "It is human's turn (enter index of your card): ";
 	int cardIndex;
@@ -12,7 +12,7 @@ int HumanPlayer::chooseCardFirstMove(vector<Card> maxCards, vector<Card> minCard
 	return cardIndex;
 }
 
-int HumanPlayer::chooseCardSecondMove(Card firstCard, vector<Card> maxCards, vector<Card> minCards, bool hasTrickMax, bool hasTrickMin)
+int HumanPlayer::chooseCardSecondMove(Card firstCard, vector<Card> maxCards, vector<Card> minCards, int maxPoints, int minPoints, bool hasTrickMax, bool hasTrickMin)
 {
 	auto possiblePlays = rules.takeAlternatives(maxCards, firstCard);
 	cout << "It is human's turn (enter index of your card): ";

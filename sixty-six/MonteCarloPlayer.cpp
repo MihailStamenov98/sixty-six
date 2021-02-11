@@ -1,6 +1,8 @@
 #include "MonteCarloPlayer.h"
 #include "EndGamePlayer.h"
 #include<random>
+#include<iostream>
+using namespace std;
 
 MonteCarloPlayer::MonteCarloPlayer(Color trump, int iterations)
 {
@@ -28,11 +30,15 @@ int MonteCarloPlayer::getRandomIndex(int elementsCount)
 {
 	random_device rd;
 	mt19937 mt(rd());
-	uniform_int_distribution<int> distribution(0, elementsCount - 1);
-	return distribution(rd);
+	if (elementsCount == 0)
+	{
+		cout<<"elements are 0"<<endl;
+	}
+	uniform_int_distribution<> distribution(0, elementsCount-1);
+	return distribution(mt);
 }
 
-vector<Card> getRemainingCards(vector<Card> myCards, vector<Card> passedCards)
+/*vector<Card> getRemainingCards(vector<Card> myCards, vector<Card> passedCards)
 {
 	vector<Card> knownCards;
 	knownCards.insert(knownCards.end(), myCards.begin(), myCards.end());
@@ -40,16 +46,24 @@ vector<Card> getRemainingCards(vector<Card> myCards, vector<Card> passedCards)
 	sort(knownCards.begin(), knownCards.end());
 	vector<Card> remainingCards = Card::getRemainingCards(knownCards);
 	return remainingCards;
-}
+}*/
 
 double MonteCarloPlayer::rollOutFirstPlay(vector<Card> myCards, vector<Card> remainingCards)
 {
+	if (remainingCards.size() % 2 == 1)
+	{
+ 		return -1111;
+	}
+
 	if (remainingCards.size() == 6)
 	{
 		EndGamePlayer endPlayer(trump);
 		return (double)endPlayer.maxFirstMove(myCards, remainingCards, -1000, 1000, myPoints, oponentPoints, hasTrunkMax, hasTrunkMin);
 	}
-
+	if (myCards.size() == 0)
+	{
+		cout << "myCards are 0\n";
+	}
 	int randIndex = getRandomIndex(myCards.size());
 	Card firstCard = myCards[randIndex];
 	myCards.erase(myCards.begin() + randIndex);
@@ -59,27 +73,43 @@ double MonteCarloPlayer::rollOutFirstPlay(vector<Card> myCards, vector<Card> rem
 
 double MonteCarloPlayer::otherPlayerSimulation(vector<Card> myCards, vector<Card> remainingCards)
 {
+	if (remainingCards.size() == 1)
+	{
+		cout << "remainingCards are 0\n";
+	}
+	if (remainingCards.size() == 6)
+	{
+		EndGamePlayer endPlayer(trump);
+		return (double)endPlayer.minFirstMove(myCards, remainingCards, -1000, 1000, myPoints, oponentPoints, hasTrunkMax, hasTrunkMin);
+	}
 	int randIndex = getRandomIndex(remainingCards.size());
 	Card firstCard = remainingCards[randIndex];
 	remainingCards.erase(remainingCards.begin() + randIndex);
-	if (remainingCards.size() == 5)
-	{
-		EndGamePlayer endPlayer(trump);
-		return (double)endPlayer.maxSecondMove(myCards, remainingCards, -1000, 1000, myPoints, oponentPoints, firstCard, hasTrunkMax, hasTrunkMin);
-	}
 
 	return rollOutSecondPlay(firstCard, myCards, remainingCards);
 }
 
 double MonteCarloPlayer::otherPlayerSimulationResposnse(Card firstCard, vector<Card> myCards, vector<Card> remainingCards)
 {
+	if (remainingCards.size() % 2 == 1)
+	{
+		return -1111;
+	}
 	int randIndex = getRandomIndex(remainingCards.size());
 	Card secondCard = remainingCards[randIndex];
 	remainingCards.erase(remainingCards.begin() + randIndex);
-
+	if (remainingCards.size() < 6)
+	{
+		return -1110;
+	}
+	if (remainingCards.size() == 0)
+	{
+		cout << "remainingCards befor transfer are 0\n";
+	}
 	randIndex = getRandomIndex(remainingCards.size());
 	myCards.push_back(remainingCards[randIndex]);
 	remainingCards.erase(remainingCards.begin() + randIndex);
+
 	if (firstCard.isGreater(secondCard, trump))
 	{
 		hasTrunkMax = true;
@@ -100,9 +130,17 @@ double MonteCarloPlayer::rollOutSecondPlay(Card firstCard, vector<Card> myCards,
 	Card secondCard = myCards[randIndex];
 	myCards.erase(myCards.begin() + randIndex);
 
+	if (remainingCards.size() == 0)
+	{
+		cout << "remainingCards1 befor transfer are 0\n";
+	}
 	randIndex = getRandomIndex(remainingCards.size());
 	myCards.push_back(remainingCards[randIndex]);
 	remainingCards.erase(remainingCards.begin() + randIndex);
+	if (remainingCards.size() < 6)
+	{
+		return -1110;
+	}
 	if (firstCard.isGreater(secondCard, trump))
 	{
 		hasTrunkMin = true;
@@ -119,7 +157,12 @@ double MonteCarloPlayer::rollOutSecondPlay(Card firstCard, vector<Card> myCards,
 
 double MonteCarloPlayer::treeExploaringFirstMove(Node* root, vector<Card> myCards, vector<Card> remainingCards)
 {
-	if (root->n == 0)
+	if (remainingCards.size() % 2 == 1)
+	{
+		return -1111;
+	}
+
+	if (root->n == 0 || remainingCards.size() == 6)
 	{
 		root->t = rollOutFirstPlay(myCards, remainingCards);
 		root->n = root->n + 1;
@@ -131,10 +174,14 @@ double MonteCarloPlayer::treeExploaringFirstMove(Node* root, vector<Card> myCard
 		{
 			root->children = createChildren(myCards.size());
 		}
+		if (root->children.size() == 0)
+		{
+			return 0;
+		}
 		int i = chooseChild(root);
 		Node* exploreChild = root->children[i];
 		Card firstCard = myCards[i];
-		myCards.erase(myCards.begin() + i);
+		myCards.erase(myCards.begin() + i); 
 		root->n = root->n + 1;
 		root->t += treeExploaringOponentSecondMove(firstCard, exploreChild, myCards, remainingCards);
 		return root->t;
@@ -144,7 +191,11 @@ double MonteCarloPlayer::treeExploaringFirstMove(Node* root, vector<Card> myCard
 
 double MonteCarloPlayer::treeExploaringOponentSecondMove(Card firstCard, Node* root, vector<Card> myCards, vector<Card> remainingCards)
 {
-	if (root->n == 0)
+	if (remainingCards.size() %2 == 1)
+	{
+		return -1111;
+	}
+	if (root->n == 0 || remainingCards.size() == 6)
 	{
 		root->t = otherPlayerSimulationResposnse(firstCard, myCards, remainingCards);
 		root->n = root->n + 1;
@@ -156,10 +207,19 @@ double MonteCarloPlayer::treeExploaringOponentSecondMove(Card firstCard, Node* r
 		{
 			root->children = createChildren(remainingCards.size());
 		}
+		if (root->children.size() == 0)
+		{
+			return 0;
+		}
 		int i = chooseChild(root);
 		Node* exploreChild = root->children[i];
 		Card secondCard = remainingCards[i];
 		remainingCards.erase(remainingCards.begin() + i);
+
+		int randIndex = getRandomIndex(remainingCards.size());
+		myCards.push_back(remainingCards[randIndex]);
+		remainingCards.erase(remainingCards.begin() + randIndex);
+
 		if (firstCard.isGreater(secondCard, trump))
 		{
 			hasTrunkMax = true;
@@ -180,7 +240,11 @@ double MonteCarloPlayer::treeExploaringOponentSecondMove(Card firstCard, Node* r
 
 double MonteCarloPlayer::treeExploaringOponentFirstMove(Node* root, vector<Card> myCards, vector<Card> remainingCards)
 {
-	if (root->n == 0)
+	if (remainingCards.size() % 2 == 1)
+	{
+		return -1111;
+	}
+	if (root->n == 0 || remainingCards.size() == 6)
 	{
 		root->t = otherPlayerSimulation( myCards, remainingCards);
 		root->n = root->n + 1;
@@ -191,6 +255,10 @@ double MonteCarloPlayer::treeExploaringOponentFirstMove(Node* root, vector<Card>
 		if (root->n == 1)
 		{
 			root->children = createChildren(remainingCards.size());
+		}
+		if (root->children.size() == 0)
+		{
+			return 0;
 		}
 		int i = chooseChild(root);
 		Node* exploreChild = root->children[i];
@@ -204,7 +272,11 @@ double MonteCarloPlayer::treeExploaringOponentFirstMove(Node* root, vector<Card>
 
 double MonteCarloPlayer::treeExploaringSecondMove(Card firstCard, Node* root, vector<Card> myCards, vector<Card> remainingCards)
 {
-	if (root->n == 0)
+	if (remainingCards.size()%2 == 1)
+	{
+		return -1111;
+	}
+	if (root->n == 0 || remainingCards.size() == 6)
 	{
 		root->t = rollOutSecondPlay(firstCard, myCards, remainingCards);
 		root->n = root->n + 1;
@@ -216,10 +288,19 @@ double MonteCarloPlayer::treeExploaringSecondMove(Card firstCard, Node* root, ve
 		{
 			root->children = createChildren(myCards.size());
 		}
+		if (root->children.size() == 0)
+		{
+			return 0;
+		}
 		int i = chooseChild(root);
 		Node* exploreChild = root->children[i];
 		Card secondCard = myCards[i];
 		myCards.erase(myCards.begin() + i);
+
+		int randIndex = getRandomIndex(remainingCards.size());
+		myCards.push_back(remainingCards[randIndex]);
+		remainingCards.erase(remainingCards.begin() + randIndex);
+
 		if (firstCard.isGreater(secondCard, trump))
 		{
 			hasTrunkMin = true;
@@ -264,6 +345,10 @@ int  MonteCarloPlayer::startIterationsFirst(vector<Card> myCards, vector<Card> r
 		hasTrunkMin = initialHasTrunkMin;
 		auto x = treeExploaringFirstMove(root, myCards, remainingCards);
 	}
+	if (root->children.size() == 0)
+	{
+		return 0;
+	}
 	int bestMove = chooseChild(root);
 	deleteTree(root);
 	return bestMove;
@@ -281,6 +366,10 @@ int MonteCarloPlayer::startIterationsSecond(Card firstCard, vector<Card> myCards
 		hasTrunkMax = initialHasTrunkMax;
 		hasTrunkMin = initialHasTrunkMin;
 		auto x = treeExploaringSecondMove(firstCard, root, myCards, remainingCards);
+	}
+	if (root->children.size() == 0)
+	{
+		return 0;
 	}
 	int bestMove = chooseChild(root);
 	deleteTree(root);
@@ -302,6 +391,10 @@ vector<MonteCarloPlayer::Node*> MonteCarloPlayer::createChildren(int count)
 
 int MonteCarloPlayer::chooseChild(Node* root)
 {
+	if (root->children.size() == 0)
+	{
+		return 0;
+	}
 	int bestChild = 0;
 	double bestValue = evaluateNode(root->children[0]->t, root->n, root->children[0]->n);
 	for (int i = 1; i < root->children.size(); ++i)

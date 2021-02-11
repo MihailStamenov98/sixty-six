@@ -240,7 +240,7 @@ int EndGamePlayer::minFirstMove(vector<Card> maxCards, vector<Card> minCards, in
 	return value;
 }
 
-int EndGamePlayer::chooseCardFirstMove(vector<Card> maxCards, vector<Card> minCards, bool hasTrickMax, bool hasTrickMin)
+int EndGamePlayer::chooseCardFirstMove(vector<Card> maxCards, vector<Card> minCards, int maxPoints, int minPoints, bool hasTrickMax, bool hasTrickMin)
 {
 	cout << "It is EndGamePlayer turn:\n";
 	int value = -1000;
@@ -249,7 +249,7 @@ int EndGamePlayer::chooseCardFirstMove(vector<Card> maxCards, vector<Card> minCa
 	{
 		vector<Card> maxCardsReduced = maxCards;
 		maxCardsReduced.erase(maxCardsReduced.begin() + i);
-		int temp = minSecondMove(maxCardsReduced, minCards, -1000, 1000, 0, 0, maxCards[i],hasTrickMax, hasTrickMin);
+		int temp = minSecondMove(maxCardsReduced, minCards, -1000, 1000, maxPoints, minPoints, maxCards[i],hasTrickMax, hasTrickMin);
 		if (value < temp)
 		{
 			value = temp;
@@ -259,7 +259,7 @@ int EndGamePlayer::chooseCardFirstMove(vector<Card> maxCards, vector<Card> minCa
 	return index;
 }
 
-int EndGamePlayer::chooseCardSecondMove(Card firstCard, vector<Card> maxCards, vector<Card> minCards, bool hasTrickMax, bool hasTrickMin)
+int EndGamePlayer::chooseCardSecondMove(Card firstCard, vector<Card> maxCards, vector<Card> minCards, int maxPoints, int minPoints, bool hasTrickMax, bool hasTrickMin)
 {
 	cout << "It is EndGamePlayer turn:\n";
 	int index = -1;
@@ -273,17 +273,17 @@ int EndGamePlayer::chooseCardSecondMove(Card firstCard, vector<Card> maxCards, v
 
 		if (firstCard.isGreater(possiblePlays[i], trump))
 		{
-			int minPoints = firstCard.getValue();
+			minPoints += firstCard.getValue();
 			minPoints += possiblePlays[i].getValue();
 			hasTrickMin = true;
-			temp = minFirstMove(maxCardsReduced, minCards, -1000, 1000, 0, minPoints, hasTrickMax, hasTrickMin);
+			temp = minFirstMove(maxCardsReduced, minCards, -1000, 1000, maxPoints, minPoints, hasTrickMax, hasTrickMin);
 		}
 		else
 		{
-			int maxPoints = firstCard.getValue();
+			maxPoints += firstCard.getValue();
 			maxPoints += possiblePlays[i].getValue();
 			hasTrickMax = true;
-			temp = maxFirstMove(maxCardsReduced, minCards, -1000, 1000, maxPoints, 0, hasTrickMax, hasTrickMin);
+			temp = maxFirstMove(maxCardsReduced, minCards, -1000, 1000, maxPoints, minPoints, hasTrickMax, hasTrickMin);
 		}
 
 		if (value < temp)
