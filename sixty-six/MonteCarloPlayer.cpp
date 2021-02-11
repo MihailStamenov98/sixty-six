@@ -142,10 +142,6 @@ double MonteCarloPlayer::treeExploaringFirstMove(Node* root, vector<Card> myCard
 		{
 			root->children = createChildren(myCards.size());
 		}
-		if (root->children.size() == 0)
-		{
-			return 0;
-		}
 		int i = chooseChild(root);
 		Node* exploreChild = root->children[i];
 		Card firstCard = myCards[i];
@@ -170,10 +166,6 @@ double MonteCarloPlayer::treeExploaringOponentSecondMove(Card firstCard, Node* r
 		if (root->n == 1)
 		{
 			root->children = createChildren(remainingCards.size());
-		}
-		if (root->children.size() == 0)
-		{
-			return 0;
 		}
 		int i = chooseChild(root);
 		Node* exploreChild = root->children[i];
@@ -243,10 +235,6 @@ double MonteCarloPlayer::treeExploaringSecondMove(Card firstCard, Node* root, ve
 		if (root->n == 1)
 		{
 			root->children = createChildren(myCards.size());
-		}
-		if (root->children.size() == 0)
-		{
-			return 0;
 		}
 		int i = chooseChild(root);
 		Node* exploreChild = root->children[i];
@@ -321,11 +309,12 @@ int MonteCarloPlayer::startIterationsSecond(Card firstCard, vector<Card> myCards
 		oponentPoints = initialMinPoints;
 		hasTrunkMax = initialHasTrunkMax;
 		hasTrunkMin = initialHasTrunkMin;
+
 		auto x = treeExploaringSecondMove(firstCard, root, myCards, remainingCards);
 	}
 	if (root->children.size() == 0)
 	{
-		return 0;
+		return -1;
 	}
 	int bestMove = chooseChild(root);
 	deleteTree(root);

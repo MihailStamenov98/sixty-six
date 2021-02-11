@@ -2,7 +2,7 @@
 #include <algorithm>
 #include <random>
 #include <chrono>
-GameController::GameController()
+GameController::GameController(): lastCard(spades,nine)
 {
 
 	/*deck = getDeck();
@@ -27,6 +27,7 @@ GameController::GameController()
 	deck = { Card(hearts,queen), Card(diamonds,king),Card(spades,jack),Card(spades,nine),Card(spades,ten), Card(spades, ace),
 			 Card(diamonds,queen), Card(diamonds,ten),Card(diamonds,ace),Card(hearts,ace),Card(clubs,jack), Card(diamonds, nine) };
 	trump = deck.back().getColor();
+	lastCard = deck.back();
 	computerPlayer = new ComputerPlayer(trump);
 	humanPlayer = new HumanPlayer(trump);
 
@@ -100,7 +101,7 @@ void GameController::printCards()
 {
 	computerPlayer->printCards(maxPlayerCards);
 	humanPlayer->printCards(minPlayerCards);
-	cout << "Last Card is: (" << deck.back().getColorName()<<", " << deck.back().getName()<<")";
+	cout << "Last Card is: (" << lastCard.getColorName()<<", " << lastCard.getName()<<")";
 	cout << endl;
 }
 
@@ -227,9 +228,12 @@ void GameController::play()
 	char response;
 	cin >> response;
 	auto iscomputerFirst = (response == 'n');
-
+	int trickNumber = 0;
 	while (maxPlayerCards.size() != 0)
 	{
+		++trickNumber;
+		if (trickNumber > 6)
+			isGAmeClosed = true;
 		iscomputerFirst = trickPlay(iscomputerFirst);
 	}
 

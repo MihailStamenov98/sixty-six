@@ -10,7 +10,7 @@ private:
 	int oponentResult = 0;
 	bool hasTrickMax = false;
 	bool hasTrickMin = false;
-
+	Card lastCard;
 	bool isGAmeClosed = false;
 
 	vector<Card> minPlayerCards;
