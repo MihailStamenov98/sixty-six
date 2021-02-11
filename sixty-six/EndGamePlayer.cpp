@@ -52,6 +52,8 @@ int EndGamePlayer::getGameValue(int maxPoints, int minPoints, bool hasTrickMax, 
 	{
 		return 3;
 	}
+
+	//return maxPoints - minPoints;
 }
 
 int EndGamePlayer::suitAnnouncements(Color trump, vector<Card> Cards, Card playedCard)

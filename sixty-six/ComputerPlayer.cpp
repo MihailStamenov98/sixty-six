@@ -1,6 +1,6 @@
 #include"ComputerPlayer.h"
 
-ComputerPlayer::ComputerPlayer(Color trump): endPlayer(trump), MCPlayer(trump,500)
+ComputerPlayer::ComputerPlayer(Color trump): endPlayer(trump), MCPlayer(trump,5000)
 {
 	trickCount = 0;
 	this->trump = trump;
