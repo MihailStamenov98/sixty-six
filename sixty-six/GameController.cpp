@@ -5,7 +5,7 @@
 GameController::GameController(): lastCard(spades,nine)
 {
 
-	deck = getDeck();
+	/*deck = getDeck();
 	vector<Card>::const_iterator first = deck.begin() + 0;
 	vector<Card>::const_iterator last = deck.begin() + 6;
 	vector<Card> newVec(first, last);
@@ -21,16 +21,16 @@ GameController::GameController(): lastCard(spades,nine)
 	trump = deck.back().getColor();
 	computerPlayer = new ComputerPlayer(trump);
 	humanPlayer = new HumanPlayer(trump);
+	*/
 
-
-	/*minPlayerCards = { Card(hearts,nine), Card(clubs,nine),Card(diamonds,jack),Card(spades,king),Card(hearts,jack), Card(clubs, ten)};
+	minPlayerCards = { Card(hearts,nine), Card(clubs,nine),Card(diamonds,jack),Card(spades,king),Card(hearts,jack), Card(clubs, ten)};
 	maxPlayerCards = { Card(spades,queen), Card(hearts,ten),Card(clubs,king),Card(clubs,ace),Card(clubs,queen), Card(hearts, king)};
 	deck = { Card(hearts,queen), Card(diamonds,king),Card(spades,jack),Card(spades,nine),Card(spades,ten), Card(spades, ace),
 			 Card(diamonds,queen), Card(diamonds,ten),Card(diamonds,ace),Card(hearts,ace),Card(clubs,jack), Card(diamonds, nine) };
 	trump = deck.back().getColor();
 	lastCard = deck.back();
 	computerPlayer = new ComputerPlayer(trump);
-	humanPlayer = new HumanPlayer(trump);*/
+	humanPlayer = new HumanPlayer(trump);
 
 }
 

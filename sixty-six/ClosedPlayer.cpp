@@ -31,7 +31,7 @@ int ClosedPlayer::chooseCardSecondMove(Card firstCard, vector<Card> maxCards, ve
     this->hasTrickMin = hasTrickMin;
     this->firstCard = firstCard;
     int r = maxCards.size();
-    vector<Card> data(r);
+    vector<Card> data(r-1);
     combinationUtil(minCards, data, 0, minCards.size()-1, 0, r-1, false);
     return getMax();
 }
@@ -68,10 +68,18 @@ void ClosedPlayer::combinationUtil(vector<Card> arr, vector<Card> data,
         pair<int,int> x;
         if (isComputerFirst)
         {
+            if (maxCards.size() != data.size())
+            {
+                cout << "Problem";
+            }
             x = ePlayer.chooseCardFirstMove(maxCards, data, maxPoints, minPoints, hasTrickMax, hasTrickMin);
         }
         else
         {
+            if (maxCards.size()-1 != data.size())
+            {
+                cout << "Problem";
+            }
             x = ePlayer.chooseCardSecondMove(firstCard, maxCards, data, maxPoints, minPoints, hasTrickMax, hasTrickMin);
         }
         ++cardsCallsTimes[x.first];

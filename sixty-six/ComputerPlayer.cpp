@@ -1,6 +1,6 @@
 #include"ComputerPlayer.h"
 
-ComputerPlayer::ComputerPlayer(Color trump): endPlayer(trump), MCPlayer(trump,5000)
+ComputerPlayer::ComputerPlayer(Color trump): endPlayer(trump), MCPlayer(trump,10000)
 {
 	trickCount = 0;
 	this->trump = trump;
@@ -12,8 +12,9 @@ void ComputerPlayer::printCards(vector<Card> maxCards)
 }
 int ComputerPlayer::chooseCardFirstMove(vector<Card> maxCards, vector<Card> minCards, int myPoints, int oponentPoints, bool hasTrickMax, bool hasTrickMin)
 {
-	++trickCount;
+	
 	shouldCloseGame();
+	++trickCount;
 	if (isGameClosed)
 	{
 		ClosedPlayer cp(trump);
@@ -28,11 +29,11 @@ int ComputerPlayer::chooseCardFirstMove(vector<Card> maxCards, vector<Card> minC
 	{
 		return endPlayer.chooseCardFirstMove(maxCards, minCards, myPoints, oponentPoints, hasTrickMax, hasTrickMin).first;
 	}
+	
 }
 int ComputerPlayer::chooseCardSecondMove(Card firstCard, vector<Card> maxCards, vector<Card> minCards, int myPoints, int oponentPoints, bool hasTrickMax, bool hasTrickMin)
 {
 	++trickCount;
-	shouldCloseGame();
 	if (isGameClosed)
 	{
 		ClosedPlayer cp(trump);
@@ -55,7 +56,7 @@ void ComputerPlayer::closeGame()
 
 bool ComputerPlayer::shouldCloseGame()
 {
-	if (trickCount > 2)
+	if (trickCount >= 2)
 	{
 		closeGame();
 		return true;

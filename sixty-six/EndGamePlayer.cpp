@@ -263,6 +263,11 @@ pair<int, int> EndGamePlayer::chooseCardFirstMove(vector<Card> maxCards, vector<
 
 pair<int,int> EndGamePlayer::chooseCardSecondMove(Card firstCard, vector<Card> maxCards, vector<Card> minCards, int maxPoints, int minPoints, bool hasTrickMax, bool hasTrickMin)
 {
+	if (minCards.size() == 0)
+	{
+		return make_pair(0, maxSecondMove(maxCards,minCards, -1000, 1000, maxPoints, minPoints, firstCard, hasTrickMax, hasTrickMin));
+	}
+
 	//cout << "It is EndGamePlayer turn:\n";
 	int index = -1;
 	int value = -1000;

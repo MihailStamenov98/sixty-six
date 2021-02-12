@@ -23,7 +23,7 @@ double MonteCarloPlayer::evaluateNode(double t, int N, int ni)
 {
 	if (ni == 0)
 		return 1000000;
-	return (t / (double)ni) +  sqrt(2 * log(double(N)) / double(ni));
+	return (t / (double)ni) + 2 * sqrt( log(double(N)) / double(ni));
 }
 
 int MonteCarloPlayer::getRandomIndex(int elementsCount)
