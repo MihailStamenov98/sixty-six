@@ -244,7 +244,7 @@ int EndGamePlayer::minFirstMove(vector<Card> maxCards, vector<Card> minCards, in
 
 int EndGamePlayer::chooseCardFirstMove(vector<Card> maxCards, vector<Card> minCards, int maxPoints, int minPoints, bool hasTrickMax, bool hasTrickMin)
 {
-	cout << "It is EndGamePlayer turn:\n";
+	//cout << "It is EndGamePlayer turn:\n";
 	int value = -1000;
 	int index = -1;
 	for (int i = 0; i < maxCards.size(); ++i)
@@ -263,7 +263,7 @@ int EndGamePlayer::chooseCardFirstMove(vector<Card> maxCards, vector<Card> minCa
 
 int EndGamePlayer::chooseCardSecondMove(Card firstCard, vector<Card> maxCards, vector<Card> minCards, int maxPoints, int minPoints, bool hasTrickMax, bool hasTrickMin)
 {
-	cout << "It is EndGamePlayer turn:\n";
+	//cout << "It is EndGamePlayer turn:\n";
 	int index = -1;
 	int value = -1000;
 	auto possiblePlays = rules.takeAlternatives(maxCards, firstCard);

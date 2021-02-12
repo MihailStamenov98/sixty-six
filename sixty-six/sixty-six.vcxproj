@@ -141,6 +141,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Card.cpp" />
+    <ClCompile Include="ClosedPlayer.cpp" />
     <ClCompile Include="EndGamePlayer.cpp" />
     <ClCompile Include="GameController.cpp" />
     <ClCompile Include="HumanPlayer.cpp" />
@@ -151,6 +152,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Card.h" />
+    <ClInclude Include="ClosedPlayer.h" />
     <ClInclude Include="ComputerPlayer.h" />
     <ClInclude Include="EndGamePlayer.h" />
     <ClInclude Include="GameController.h" />

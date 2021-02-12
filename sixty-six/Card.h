@@ -33,7 +33,7 @@ private:
 public:
 	friend bool operator==(const Card& lhs, const Card& rhs);
 	friend bool operator<(const Card& lhs, const Card& rhs);
-
+	Card();
 	Card(Color c, Value v);
 	Card(const Card& card);
 

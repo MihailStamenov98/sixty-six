@@ -5,7 +5,7 @@
 GameController::GameController(): lastCard(spades,nine)
 {
 
-	/*deck = getDeck();
+	deck = getDeck();
 	vector<Card>::const_iterator first = deck.begin() + 0;
 	vector<Card>::const_iterator last = deck.begin() + 6;
 	vector<Card> newVec(first, last);
@@ -15,21 +15,22 @@ GameController::GameController(): lastCard(spades,nine)
 	vector<Card> secVec(first, last);
 	deck.erase(first, last);
 
+	lastCard = deck.back();
 	minPlayerCards = secVec;
 	maxPlayerCards = newVec;
 	trump = deck.back().getColor();
 	computerPlayer = new ComputerPlayer(trump);
-	humanPlayer = new HumanPlayer(trump);*/
+	humanPlayer = new HumanPlayer(trump);
 
 
-	minPlayerCards = { Card(hearts,nine), Card(clubs,nine),Card(diamonds,jack),Card(spades,king),Card(hearts,jack), Card(clubs, ten)};
+	/*minPlayerCards = { Card(hearts,nine), Card(clubs,nine),Card(diamonds,jack),Card(spades,king),Card(hearts,jack), Card(clubs, ten)};
 	maxPlayerCards = { Card(spades,queen), Card(hearts,ten),Card(clubs,king),Card(clubs,ace),Card(clubs,queen), Card(hearts, king)};
 	deck = { Card(hearts,queen), Card(diamonds,king),Card(spades,jack),Card(spades,nine),Card(spades,ten), Card(spades, ace),
 			 Card(diamonds,queen), Card(diamonds,ten),Card(diamonds,ace),Card(hearts,ace),Card(clubs,jack), Card(diamonds, nine) };
 	trump = deck.back().getColor();
 	lastCard = deck.back();
 	computerPlayer = new ComputerPlayer(trump);
-	humanPlayer = new HumanPlayer(trump);
+	humanPlayer = new HumanPlayer(trump);*/
 
 }
 
@@ -101,14 +102,21 @@ void GameController::printCards()
 {
 	computerPlayer->printCards(maxPlayerCards);
 	humanPlayer->printCards(minPlayerCards);
-	cout << "Last Card is: (" << lastCard.getColorName()<<", " << lastCard.getName()<<")";
+	cout << "Last Card is: (" << lastCard.getColorName()<<", " << lastCard.getName()<<")\n";
+	cout << "Is game closed: " << isGAmeClosed;
 	cout << endl;
 }
 
 bool GameController::trickComputerFirst()
 {
 	printCards();
+	cout << "It is Computer turn:\n";
 	///should pass remaining cards not minPlayerCards
+	if (computerPlayer->shouldCloseGame())
+	{
+		isGAmeClosed = true;
+		cout << "Game is closed by computer\n";
+	}
 	int cardIndex = computerPlayer->chooseCardFirstMove(maxPlayerCards, getRemainingCards(), computerResult, oponentResult, hasTrickMax, hasTrickMin);
 	Card firstCard = maxPlayerCards[cardIndex];
 	maxPlayerCards.erase(maxPlayerCards.begin() + cardIndex);
@@ -150,7 +158,16 @@ bool GameController::trickComputerFirst()
 bool GameController::trickComputerSecond()
 {
 	printCards(); 
+	cout << "Do you want to close?(y/n): ";
+	char c;
+	cin >> c;
 
+	if (c=='y')
+	{
+		isGAmeClosed = true;
+		computerPlayer->closeGame();
+		cout << "Game is closed by computer\n";
+	}
 	int cardIndex = humanPlayer->chooseCardFirstMove(maxPlayerCards, minPlayerCards,computerResult, oponentResult, hasTrickMax, hasTrickMin);;
 	Card firstCard = minPlayerCards[cardIndex];
 	minPlayerCards.erase(minPlayerCards.begin() + cardIndex);
@@ -162,7 +179,9 @@ bool GameController::trickComputerSecond()
 	oponentResult += anaunce;
 	cout << "You chose card: (" << firstCard.getColorName() << ", " << firstCard.getName() << ")" << endl;
 
-	///should pass remaining cards not minPlayerCards
+	//should pass remaining cards not minPlayerCards
+ 	cout << "It is Computer turn:\n";
+
 	cardIndex = computerPlayer->chooseCardSecondMove(firstCard, maxPlayerCards, getRemainingCards(), computerResult, oponentResult, hasTrickMax, hasTrickMin);
 	Card secondCard = maxPlayerCards[cardIndex];
 	maxPlayerCards.erase(maxPlayerCards.begin() + cardIndex);

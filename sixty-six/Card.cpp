@@ -1,4 +1,10 @@
 #include "Card.h"
+Card::Card()
+{
+	color = spades;
+	value = nine;
+}
+
 Card::Card(Color c, Value v)
 {
 	color = c;

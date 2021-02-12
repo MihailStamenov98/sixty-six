@@ -13,7 +13,14 @@ void ComputerPlayer::printCards(vector<Card> maxCards)
 int ComputerPlayer::chooseCardFirstMove(vector<Card> maxCards, vector<Card> minCards, int myPoints, int oponentPoints, bool hasTrickMax, bool hasTrickMin)
 {
 	++trickCount;
-	if (trickCount <= 6)
+	shouldCloseGame();
+	if (isGameClosed)
+	{
+		ClosedPlayer cp(trump);
+		return cp.chooseCardFirstMove(maxCards, minCards, myPoints, oponentPoints, hasTrickMax, hasTrickMin);
+
+	}
+	else if (trickCount <= 6)
 	{
 		return MCPlayer.startIterationsFirst(maxCards, minCards, myPoints, oponentPoints, hasTrickMax, hasTrickMin);
 	}
@@ -25,7 +32,13 @@ int ComputerPlayer::chooseCardFirstMove(vector<Card> maxCards, vector<Card> minC
 int ComputerPlayer::chooseCardSecondMove(Card firstCard, vector<Card> maxCards, vector<Card> minCards, int myPoints, int oponentPoints, bool hasTrickMax, bool hasTrickMin)
 {
 	++trickCount;
-	if (trickCount <= 6)
+	shouldCloseGame();
+	if (isGameClosed)
+	{
+		ClosedPlayer cp(trump);
+		return cp.chooseCardSecondMove(firstCard, maxCards, minCards, myPoints, oponentPoints, hasTrickMax, hasTrickMin);
+	}
+	else if (trickCount <= 6)
 	{
 		return MCPlayer.startIterationsSecond(firstCard, maxCards, minCards, myPoints, oponentPoints, hasTrickMax, hasTrickMin);
 	}
@@ -33,4 +46,19 @@ int ComputerPlayer::chooseCardSecondMove(Card firstCard, vector<Card> maxCards, 
 	{
 		return endPlayer.chooseCardSecondMove(firstCard, maxCards, minCards, myPoints, oponentPoints, hasTrickMax, hasTrickMin);
 	}
+}
+
+void ComputerPlayer::closeGame()
+{
+	isGameClosed = true;
+}
+
+bool ComputerPlayer::shouldCloseGame()
+{
+	if (trickCount > 2)
+	{
+		closeGame();
+		return true;
+	}
+	return false;
 }
