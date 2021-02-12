@@ -2,13 +2,13 @@
 D:\MPStar\КН\Година 4\Семестър 1\Изкуствен интелект\sixty-six\sixty-six\ClosedPlayer.cpp(8,21): warning C4552: '-': result of expression not used
 D:\MPStar\КН\Година 4\Семестър 1\Изкуствен интелект\sixty-six\sixty-six\ClosedPlayer.cpp(16,21): warning C4552: '-': result of expression not used
 D:\MPStar\КН\Година 4\Семестър 1\Изкуствен интелект\sixty-six\sixty-six\ClosedPlayer.cpp(19,28): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-D:\MPStar\КН\Година 4\Семестър 1\Изкуствен интелект\sixty-six\sixty-six\ClosedPlayer.cpp(21,71): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+D:\MPStar\КН\Година 4\Семестър 1\Изкуствен интелект\sixty-six\sixty-six\ClosedPlayer.cpp(21,69): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
 D:\MPStar\КН\Година 4\Семестър 1\Изкуствен интелект\sixty-six\sixty-six\ClosedPlayer.cpp(29,21): warning C4552: '-': result of expression not used
 D:\MPStar\КН\Година 4\Семестър 1\Изкуствен интелект\sixty-six\sixty-six\ClosedPlayer.cpp(33,28): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-D:\MPStar\КН\Година 4\Семестър 1\Изкуствен интелект\sixty-six\sixty-six\ClosedPlayer.cpp(35,70): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+D:\MPStar\КН\Година 4\Семестър 1\Изкуствен интелект\sixty-six\sixty-six\ClosedPlayer.cpp(35,72): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
   Generating code
-  7 of 442 functions ( 1.6%) were compiled, the rest were copied from previous compilation.
+  5 of 442 functions ( 1.1%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    21 functions had inline decision re-evaluated but remain unchanged
+    0 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   sixty-six.vcxproj -> D:\MPStar\КН\Година 4\Семестър 1\Изкуствен интелект\sixty-six\x64\Release\sixty-six.exe
