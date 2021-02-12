@@ -242,7 +242,7 @@ int EndGamePlayer::minFirstMove(vector<Card> maxCards, vector<Card> minCards, in
 	return value;
 }
 
-int EndGamePlayer::chooseCardFirstMove(vector<Card> maxCards, vector<Card> minCards, int maxPoints, int minPoints, bool hasTrickMax, bool hasTrickMin)
+pair<int, int> EndGamePlayer::chooseCardFirstMove(vector<Card> maxCards, vector<Card> minCards, int maxPoints, int minPoints, bool hasTrickMax, bool hasTrickMin)
 {
 	//cout << "It is EndGamePlayer turn:\n";
 	int value = -1000;
@@ -258,10 +258,10 @@ int EndGamePlayer::chooseCardFirstMove(vector<Card> maxCards, vector<Card> minCa
 			index = i;
 		}
 	}
-	return index;
+	return make_pair(index, value);
 }
 
-int EndGamePlayer::chooseCardSecondMove(Card firstCard, vector<Card> maxCards, vector<Card> minCards, int maxPoints, int minPoints, bool hasTrickMax, bool hasTrickMin)
+pair<int,int> EndGamePlayer::chooseCardSecondMove(Card firstCard, vector<Card> maxCards, vector<Card> minCards, int maxPoints, int minPoints, bool hasTrickMax, bool hasTrickMin)
 {
 	//cout << "It is EndGamePlayer turn:\n";
 	int index = -1;
@@ -299,6 +299,6 @@ int EndGamePlayer::chooseCardSecondMove(Card firstCard, vector<Card> maxCards, v
 	{
 		++j;
 	}
-	return j;
+	return make_pair(j, value);
 }
 

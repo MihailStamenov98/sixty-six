@@ -32,7 +32,7 @@ int ClosedPlayer::chooseCardSecondMove(Card firstCard, vector<Card> maxCards, ve
     this->firstCard = firstCard;
     int r = maxCards.size();
     vector<Card> data(r);
-    combinationUtil(minCards, data, 0, minCards.size() - 1, 0, r-1, false);
+    combinationUtil(minCards, data, 0, minCards.size(), 0, r-1, false);
     return getMax();
 }
 
@@ -46,7 +46,9 @@ int ClosedPlayer::getMax()
     int maxIndex = 0;
     for (int i = 1; i < 6; i++)
     {
-        if (cardsCallsTimes[i] > cardsCallsTimes[maxIndex])
+        /*if (cardCallsPoints[i]/((double)cardsCallsTimes[i]) > cardCallsPoints[maxIndex]/((double)cardsCallsTimes[maxIndex]))
+            maxIndex = i;*/
+        if ((double)cardCallsPoints[i]> (double)cardCallsPoints[maxIndex])
             maxIndex = i;
     }
     return maxIndex;
@@ -58,8 +60,12 @@ void ClosedPlayer::combinationUtil(vector<Card> arr, vector<Card> data,
 {
     if (index == r)
     {
+        ++m;
+        for (int j = 0; j < r; j++)
+            cout <<"("<< data[j].getColorName() << ", "<< data[j].getName()<<"); ";
+        cout << endl;
         EndGamePlayer ePlayer(trump);
-        int x;
+        pair<int,int> x;
         if (isComputerFirst)
         {
             x = ePlayer.chooseCardFirstMove(maxCards, data, maxPoints, minPoints, hasTrickMax, hasTrickMin);
@@ -68,7 +74,8 @@ void ClosedPlayer::combinationUtil(vector<Card> arr, vector<Card> data,
         {
             x = ePlayer.chooseCardSecondMove(firstCard, maxCards, data, maxPoints, minPoints, hasTrickMax, hasTrickMin);
         }
-        ++cardsCallsTimes[x];
+        ++cardsCallsTimes[x.first];
+        cardCallsPoints[x.first] += x.second;
         return;
     }
 

@@ -26,7 +26,7 @@ int ComputerPlayer::chooseCardFirstMove(vector<Card> maxCards, vector<Card> minC
 	}
 	else
 	{
-		return endPlayer.chooseCardFirstMove(maxCards, minCards, myPoints, oponentPoints, hasTrickMax, hasTrickMin);
+		return endPlayer.chooseCardFirstMove(maxCards, minCards, myPoints, oponentPoints, hasTrickMax, hasTrickMin).first;
 	}
 }
 int ComputerPlayer::chooseCardSecondMove(Card firstCard, vector<Card> maxCards, vector<Card> minCards, int myPoints, int oponentPoints, bool hasTrickMax, bool hasTrickMin)
@@ -44,7 +44,7 @@ int ComputerPlayer::chooseCardSecondMove(Card firstCard, vector<Card> maxCards, 
 	}
 	else
 	{
-		return endPlayer.chooseCardSecondMove(firstCard, maxCards, minCards, myPoints, oponentPoints, hasTrickMax, hasTrickMin);
+		return endPlayer.chooseCardSecondMove(firstCard, maxCards, minCards, myPoints, oponentPoints, hasTrickMax, hasTrickMin).first;
 	}
 }
 

@@ -12,11 +12,14 @@ private:
 	bool hasTrickMax;
 	bool hasTrickMin;
 	Card firstCard;
-	int cardsCallsTimes[6] = { 0,0,0,0,0,0 };
+	int cardsCallsTimes[6] = {0, 0, 0, 0, 0, 0};
+	double cardCallsPoints[6] = { 0, 0, 0, 0, 0, 0 };
 	void combinationUtil(vector<Card> arr, vector<Card> data,
 		int start, int end,
 		int index, int r, bool isComputerFirst);
 	int getMax();
+
+	int m = 0;
 public:
 	ClosedPlayer(Color trump);
 	void printCards(vector<Card> maxCards);

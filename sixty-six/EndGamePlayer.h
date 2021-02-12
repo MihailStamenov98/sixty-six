@@ -2,7 +2,7 @@
 #include "Card.h"
 #include "Player.h"
 #include "RulesClosed.h"
-class EndGamePlayer: public Player
+class EndGamePlayer
 {
 private:
 	Color trump;
@@ -18,7 +18,7 @@ public:
 	int minFirstMove(vector<Card> maxCards, vector<Card> minCards, int alpha, int beta, int maxPoints, int minPoints, bool hasTrickMax, bool hasTrickMin);
 
 	void printCards(vector<Card> maxCards);
-	int chooseCardFirstMove(vector<Card> maxCards, vector<Card> minCards, int maxPoints, int minPoints, bool hasTrickMax, bool hasTrickMin);
-	int chooseCardSecondMove(Card firstCard, vector<Card> maxCards, vector<Card> minCards, int maxPoints, int minPoints, bool hasTrickMax, bool hasTrickMin);
+	pair<int,int> chooseCardFirstMove(vector<Card> maxCards, vector<Card> minCards, int maxPoints, int minPoints, bool hasTrickMax, bool hasTrickMin);
+	pair<int, int> chooseCardSecondMove(Card firstCard, vector<Card> maxCards, vector<Card> minCards, int maxPoints, int minPoints, bool hasTrickMax, bool hasTrickMin);
 	
 };
